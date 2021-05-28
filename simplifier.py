@@ -1,4 +1,4 @@
-from derivative import isDependsOnVar
+from calculator import calculate
 from math_ast import *
 
 def is_var_dependant(tree: MathAST) -> bool:
@@ -13,28 +13,38 @@ def is_var_dependant(tree: MathAST) -> bool:
     else: 
         return False
 
-def simplify(n: MathAST) -> MathAST:
-    if isinstance(n, LeafToken):
-        return n
+def simplify(ast: MathAST) -> MathAST:
+    if isinstance(ast, LeafToken):
+        return ast
     
-    if not is_var_dependant(n):
-    if isinstance(n, SingleToken):
-        n.a = simplify(n.a)
-        return n
-    elif isinstance(n, DoubleToken):
-        if isinstance(n, Add):
-            if (n.a == 0):
-                return n.b
-            elif (n.b == 0):
-                return n.a
-        elif isinstance(n, Mul):
-            if (n.a == 0 or n.b == 0):
+    if not is_var_dependant(ast):
+        return Constant(calculate(ast))
+
+    if isinstance(ast, SingleToken):
+        ast.a = simplify(ast.a)
+        return ast
+    elif isinstance(ast, DoubleToken):
+        ast.a = simplify(ast.a)
+        ast.b = simplify(ast.b)
+        if isinstance(ast, Add):
+            if isinstance(ast.a, Constant) and (ast.a.value == 0):
+                return ast.b
+            elif isinstance(ast.b, Constant) and (ast.b.value == 0):
+                return ast.a
+        elif isinstance(ast, Mul):
+            if (isinstance(ast.a, Constant) and (ast.a.value == 0)) \
+               or (isinstance(ast.b, Constant) and (ast.b.value == 0)):
                 return Constant(0)
-            elif (n.a == 1):
-                return n.b
-            elif (n.b == 1):
-                return n.a
-        elif isinstance(n, Div):
-            if (n.a == 0):
+            elif isinstance(ast.a, Constant) and (ast.a.value == 1):
+                return ast.b
+            elif isinstance(ast.b, Constant) and (ast.b.value == 1):
+                return ast.a
+        elif isinstance(ast, Div):
+            if isinstance(ast.a, Constant) and (ast.a.value == 0):
                 return Constant(0)
-            elif (n.b == 1)
+            elif isinstance(ast.b, Constant) and (ast.b.value == 1):
+                return ast.a
+        elif isinstance(ast, Pow):
+            if isinstance(ast.b, Constant) and (ast.b.value == 0):
+                return Constant(1)
+    return ast

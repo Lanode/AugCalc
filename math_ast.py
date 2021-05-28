@@ -41,7 +41,7 @@ class Variable (LeafToken):
     name: str
 @dataclass
 class Constant (LeafToken):
-    value: int
+    value: float
 
 @dataclass
 class Differentiate (MathAST): 
