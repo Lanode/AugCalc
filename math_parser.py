@@ -20,7 +20,7 @@ rules = [
         'data': {
             'args': 1,
             'precedence': 3,
-            'isLeftAssociative': True
+            'isLeftAssociative': False
         }
     },
     {

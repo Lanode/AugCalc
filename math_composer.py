@@ -27,6 +27,6 @@ def compose(ast: MathAST) -> str:
     elif isinstance(ast, Variable):
         return ast.name
     elif isinstance(ast, Constant):
-        return str(ast.value)
+        return f'{ast.value:g}'
     else:
         raise Exception('Compose error: unknown node type: '+ast.__class__.__name__)

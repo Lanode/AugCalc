@@ -23,7 +23,8 @@ def simplify(ast: MathAST) -> MathAST:
 
     if isinstance(ast, SingleToken):
         ast.a = simplify(ast.a)
-        return ast
+        if isinstance(ast, Usub) and isinstance(ast.a, Usub):
+            return ast.a.a
     elif isinstance(ast, DoubleToken):
         ast.a = simplify(ast.a)
         ast.b = simplify(ast.b)
