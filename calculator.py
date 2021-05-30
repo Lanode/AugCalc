@@ -38,7 +38,7 @@ def calculate(ast: MathAST) -> float:
     elif isinstance(ast, Div):
         return calculate(ast.a) / calculate(ast.b)
     elif isinstance(ast, Pow):
-        return calculate(ast.a) ^ calculate(ast.b)
+        return calculate(ast.a) ** calculate(ast.b)
     
     else:
         raise Exception('Calculate error: unknown MathAST node type')

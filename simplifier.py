@@ -26,6 +26,8 @@ def simplify(ast: MathAST) -> MathAST:
     elif isinstance(ast, DoubleToken):
         ast.a = simplify(ast.a)
         ast.b = simplify(ast.b)
+        if not is_var_dependant(ast):
+            return Constant(calculate(ast))
         if isinstance(ast, Add):
             if isinstance(ast.a, Constant) and (ast.a.value == 0):
                 return ast.b
