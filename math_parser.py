@@ -15,7 +15,7 @@ class TokenTypes(IntEnum):
 
 rules = [
     { 
-        'key': r"[np]", 
+        'key': r"[\~]", 
         'type': TokenTypes.OPERATOR,
         'data': {
             'args': 1,
@@ -77,7 +77,7 @@ def print_tokens(t):
 # вохзможно надо переделать в более продвинутый отокенайзер не на регексах
 # а на лямбдах с передачей очереди уже чсщуествующих токенов в нее
 def tokenize(s: str) -> List[Tuple[str, Dict]]:
-    s = re.sub('(^|[\(\+\-\*/\^])\-', '\g<1>n', s)
+    s = re.sub('(^|[\(\+\-\*/\^])\-', '\g<1>~', s)
     s = re.sub('(^|[\(\+\-\*/\^])\+', '\g<1>', s)
 
     output:  List[Tuple[str, Dict]] = list()
@@ -133,10 +133,9 @@ def shunting_yard_ast(tokens: List[Tuple[str, Dict]]) -> MathAST:
 
     def op_add(op: str):
         b = out.pop()
-        if op[0] == 'n':
+        if op[0] == '~':
             out.append(Usub(b))
             return
-
         a = out.pop()
         if op[0] == '+':
             out.append(Add(a, b))
@@ -157,7 +156,7 @@ def shunting_yard_ast(tokens: List[Tuple[str, Dict]]) -> MathAST:
                         out.append(x())
                         break
             elif token[1]['type'] == TokenTypes.NUMBER:
-                out.append(Constant(int(token[0])))
+                out.append(Constant(float(token[0])))
             elif token[1]['type'] == TokenTypes.VARIABLE:
                 out.append(Variable(token[0]))
             #out.append(token)

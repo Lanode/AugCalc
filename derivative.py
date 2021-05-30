@@ -106,9 +106,14 @@ def is_depends_on_dx(tree: MathAST, dx: str) -> bool:
         return False
 
 def detect_vars(f: MathAST) -> List[Variable]:
-    vars = list()
+    vars: List[Variable] = list()
     def walk(f):
-        if isinstance(f, Variable): vars.append(f)
+        if isinstance(f, Variable): 
+            for v in vars:
+                if v.name == f.name:
+                    break
+            else:
+                vars.append(f)
         elif isinstance(f, SingleToken): 
             walk(f.a)
         elif isinstance(f, DoubleToken): 

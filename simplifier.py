@@ -1,3 +1,4 @@
+from math import pi
 from calculator import calculate
 from math_ast import *
 
@@ -8,7 +9,7 @@ def is_var_dependant(tree: MathAST) -> bool:
         return a or b
     elif isinstance(tree, SingleToken): 
         return is_var_dependant(tree.a)
-    elif isinstance(tree, Variable): 
+    elif isinstance(tree, Variable) or isinstance(tree, (Pi, Exponenta)): 
         return True
     else: 
         return False
@@ -26,11 +27,16 @@ def simplify(ast: MathAST) -> MathAST:
     elif isinstance(ast, DoubleToken):
         ast.a = simplify(ast.a)
         ast.b = simplify(ast.b)
-        if not is_var_dependant(ast):
-            return Constant(calculate(ast))
+        # if not is_var_dependant(ast):
+        #     return Constant(calculate(ast))
         if isinstance(ast, Add):
             if isinstance(ast.a, Constant) and (ast.a.value == 0):
                 return ast.b
+            elif isinstance(ast.b, Constant) and (ast.b.value == 0):
+                return ast.a
+        elif isinstance(ast, Sub):
+            if isinstance(ast.a, Constant) and (ast.a.value == 0):
+                return Usub(ast.b)
             elif isinstance(ast.b, Constant) and (ast.b.value == 0):
                 return ast.a
         elif isinstance(ast, Mul):
