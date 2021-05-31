@@ -126,5 +126,7 @@ def detect_vars_and_diff(f: MathAST) -> MathAST:
     v = detect_vars(f)
     if len(v) > 1:
         raise Exception('Derivative error: function have 2 or more variables')
-    
-    return differentiate(f, v[0].name)
+    if len(v) == 1:
+        return differentiate(f, v[0].name)
+    else:
+        return differentiate(f, '')

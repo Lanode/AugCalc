@@ -13,7 +13,7 @@ def calculate(ast: MathAST) -> float:
     elif isinstance(ast, Cos):
         return math.cos(calculate(ast.a))
     elif isinstance(ast, Tg):
-        return math.tg(calculate(ast.a))
+        return math.tan(calculate(ast.a))
     elif isinstance(ast, Ctg):
         return math.cos(calculate(ast.a))/math.sin(calculate(ast.a))
     elif isinstance(ast, Ln):
