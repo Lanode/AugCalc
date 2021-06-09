@@ -49,7 +49,7 @@ class Quadrature:
             ans = Quadrature.__double_nseg(func, x0, x1)
             err_est = abs(old_ans - ans)
 
-        print(ans)
+        return ans
 
     def simpson(func, x0, x1, rtol = 1.0e-10, nseg0 = 1):
         """Интегрирование методом парабол с заданной точностью.
@@ -68,4 +68,4 @@ class Quadrature:
             err_est = abs(old_ans - ans)
 
         #print("Total function calls: " + str(Quadrature.__ncalls))
-        print(ans)
+        return ans
