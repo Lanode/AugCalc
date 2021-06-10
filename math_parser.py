@@ -1,5 +1,5 @@
 from math_ast import *
-from typing import *
+import typing as t
 from enum import IntEnum, auto
 import re
 
@@ -76,11 +76,11 @@ def print_tokens(t):
 
 # вохзможно надо переделать в более продвинутый отокенайзер не на регексах
 # а на лямбдах с передачей очереди уже чсщуествующих токенов в нее
-def tokenize(s: str) -> List[Tuple[str, Dict]]:
+def tokenize(s: str) -> typing.List[typing.Tuple[str, typing.Dict]]:
     s = re.sub('(^|[\(\+\-\*/\^])\-', '\g<1>~', s)
     s = re.sub('(^|[\(\+\-\*/\^])\+', '\g<1>', s)
 
-    output:  List[Tuple[str, Dict]] = list()
+    output:  typing.List[typing.Tuple[str, typing.Dict]] = list()
     start = 0
     while start < len(s):
         for rule in rules:
@@ -94,7 +94,7 @@ def tokenize(s: str) -> List[Tuple[str, Dict]]:
     #print_tokens(output)
     return output
 
-def shunting_yard(tokens: List[Tuple[str, Dict]]) -> List[Tuple[str, Dict]]:
+def shunting_yard(tokens: t.List[t.Tuple[str, t.Dict]]) -> t.List[t.Tuple[str, t.Dict]]:
     op_stack = list()
     out = list()
 
@@ -127,7 +127,7 @@ def shunting_yard(tokens: List[Tuple[str, Dict]]) -> List[Tuple[str, Dict]]:
 
     #print_tokens(out)
 
-def shunting_yard_ast(tokens: List[Tuple[str, Dict]]) -> MathAST:
+def shunting_yard_ast(tokens: t.List[t.Tuple[str, t.Dict]]) -> MathAST:
     op_stack = list()
     out = list()
 

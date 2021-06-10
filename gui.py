@@ -3,11 +3,12 @@ from simplifier import simplify
 from derivative import differentiate, detect_vars_and_diff
 from math_parser import parse 
 from math_composer import compose
-from integral import Quadrature
+from integral import detect_vars_and_simp
 
 from tkinter import StringVar, Text, ttk
 from tkinter import messagebox
 import tkinter as tk
+import traceback
 
 def solve_diff():
     vvod = str(formula_diff.get()) 
@@ -22,7 +23,7 @@ def solve_diff():
         vivod_diff.delete(0,"end")
         vivod_diff.insert(0, compose(deriv_ast))
     except Exception as e:
-        print(e)
+        traceback.print_exc()
 
 def solve_integ():
     vvod_formula = str(formula_integ.get())
@@ -31,15 +32,19 @@ def solve_integ():
     try:
         ast = parse(vvod_formula)
         ast = simplify(ast)
-        integ = Quadrature.simpson(ast,vvod_a,vvod_b)
+        print('simplified:\n'+compose(ast))
+        integ = detect_vars_and_simp(ast,vvod_a,vvod_b)
+        print('area under a curve:\n'+str(integ))
         vivod_integ.delete(0,"end")
         vivod_integ.insert(0, str(integ))
     except Exception as e:
-        print(e)
+        traceback.print_exc()
 
 
 root = tk.Tk()
 root.geometry('550x230')
+root.minsize(550, 230)
+root.maxsize(550, 230)
 root.title('Calculator')
 
 notebook = ttk.Notebook(root)
@@ -67,18 +72,18 @@ name = StringVar()
 vivod_diff = tk.Entry(frame1, width=70, relief="ridge")
 vivod_diff.grid(column= 2, row= 5)
 
-tk.Label(frame2,text ='Use only "x" variable' ).grid(column = 1,row = 1,)
+# tk.Label(frame2,text ='Use only "x" variable' ).grid(column = 1,row = 1,)
 formula_integ = tk.Entry(frame2, width=87)
-formula_integ.grid(column= 1, row= 2)
-tk.Label(frame2,text ="a:" ).grid(column = 1,row = 3,)
+formula_integ.grid(column= 1, row= 1)
+tk.Label(frame2,text ="a:" ).grid(column = 1,row = 2,)
 chislo_a = tk.Entry(frame2, width=87)
-chislo_a.grid(column= 1, row= 4)
-tk.Label(frame2,text ="b:" ).grid(column = 1,row = 5,)
+chislo_a.grid(column= 1, row= 3)
+tk.Label(frame2,text ="b:" ).grid(column = 1,row = 4,)
 chislo_b = tk.Entry(frame2, width=87)
-chislo_b.grid(column= 1, row= 6)
-button_integ = tk.Button(frame2,text="Solve", width = 60, height=2, command=solve_integ).grid(column=1,row=7) 
+chislo_b.grid(column= 1, row= 5)
+button_integ = tk.Button(frame2,text="Solve", width = 60, height=2, command=solve_integ).grid(column=1,row=6) 
 vivod_integ = tk.Entry(frame2, width=70, relief="ridge")
-vivod_integ.grid(column= 1, row= 8)
+vivod_integ.grid(column= 1, row= 7)
 
 
 root.mainloop()

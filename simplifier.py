@@ -1,18 +1,7 @@
 from math import pi
 from calculator import calculate
 from math_ast import *
-
-def is_var_dependant(tree: MathAST) -> bool:
-    if isinstance(tree, DoubleToken):
-        a = is_var_dependant(tree.a)
-        b = is_var_dependant(tree.b)
-        return a or b
-    elif isinstance(tree, SingleToken): 
-        return is_var_dependant(tree.a)
-    elif isinstance(tree, Variable) or isinstance(tree, (Pi, Exponenta)): 
-        return True
-    else: 
-        return False
+from utils import *
 
 def simplify(ast: MathAST) -> MathAST:
     if isinstance(ast, LeafToken):
@@ -56,4 +45,6 @@ def simplify(ast: MathAST) -> MathAST:
         elif isinstance(ast, Pow):
             if isinstance(ast.b, Constant) and (ast.b.value == 0):
                 return Constant(1)
+            elif isinstance(ast.b, Constant) and (ast.b.value == 1):
+                return ast.a
     return ast

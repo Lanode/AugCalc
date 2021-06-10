@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import *
+import typing
 
 class MathAST: pass
 
@@ -48,5 +48,5 @@ class Differentiate (MathAST):
     f: MathAST
     dx: Variable
 
-constants: List[Type[LeafToken]] = [Pi, Exponenta]
-functions: List[Type[SingleToken]] = [Sin, Cos, Tg, Ln, Abs, Usub, Arcsin, Arccos, Arctg, Arcctg]
+constants: typing.List[typing.Type[LeafToken]] = [Pi, Exponenta]
+functions: typing.List[typing.Type[SingleToken]] = [Sin, Cos, Tg, Ln, Abs, Usub, Arcsin, Arccos, Arctg, Arcctg]
